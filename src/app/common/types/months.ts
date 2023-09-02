@@ -31,7 +31,7 @@ const monthsByLanguage = {
   english: englishMonths
 }
 
-export function mapMonthNameToNumber(month: Month) {
+export function mapMonthNameToNumber (month: Month) {
   for (const months of Object.values(monthsByLanguage)) {
     const index = months.findIndex((m) => m === month)
 

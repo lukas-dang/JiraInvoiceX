@@ -1,14 +1,23 @@
+interface IssueType {
+  id: string
+  name: string
+}
+
 interface Issue {
   id: string
   key: string
   fields: {
     summary: string
-    issuetype: {
-      id: string
-      name: string
-    }
+    issuetype: IssueType
     project: {
       key: string
+    }
+    parent?: {
+      key: string
+      fields: {
+        summary: string
+        issuetype: IssueType
+      }
     }
   }
 }

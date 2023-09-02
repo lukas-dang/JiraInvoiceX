@@ -6,6 +6,11 @@ export interface InvoiceIssue {
   type: string
   url: string
   project: string
+  parentIssue?: {
+    key: string
+    summary: string
+    type: string
+  }
 }
 
 export interface InvoiceProject {

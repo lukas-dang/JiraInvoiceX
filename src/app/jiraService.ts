@@ -26,24 +26,19 @@ export class JiraService {
     const endDate = getEndOfMonth(month)
     const jql = `worklogAuthor = currentUser() AND worklogDate >= "${startDate}" AND worklogDate < "${endDate}"`
 
-    try {
-      const response = (await this.jira.searchJira(jql)) as JiraResponse
+    const response = (await this.jira.searchJira(jql)) as JiraResponse
 
-      return await Promise.all(
-        response.issues.map((issue) =>
-          this.processIssue({
+    return await Promise.all(
+      response.issues.map(
+        async (issue) =>
+          await this.processIssue({
             issue,
             accountId: user.accountId,
             startDate,
             endDate
           })
-        )
       )
-
-      // return invoiceDatas.reduce((sum, time) => sum + time, 0)
-    } catch (err) {
-      console.error(err)
-    }
+    )
   }
 
   async processIssue({
@@ -79,7 +74,12 @@ export class JiraService {
       loggedHours: loggedSeconds / SECONDS_PER_HOURS,
       type: issue.fields.issuetype.name,
       url: `${host}/browse/${issue.key}`,
-      project: issue.fields.project.key
+      project: issue.fields.project.key,
+      parentIssue: issue.fields.parent && {
+        key: issue.fields.parent.key,
+        summary: issue.fields.parent.fields.summary,
+        type: issue.fields.parent.fields.issuetype.name
+      }
     }
   }
 

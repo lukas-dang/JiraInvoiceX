@@ -1,4 +1,4 @@
-export function mapProjectNameToInvoiceCode(name: string) {
+export function mapProjectNameToInvoiceCode (name: string) {
   switch (name) {
     case 'CIA':
       return 'CIA - P_ECO_22_12'

@@ -1,5 +1,4 @@
 import { InvoiceService } from './app/invoiceService'
-import * as XLSX from 'xlsx'
 
 const invoiceService = new InvoiceService()
 
@@ -7,6 +6,17 @@ invoiceService
   .getInvoiceData('Srpen')
   .then((data) => {
     console.info(data)
+
+    data.issues.forEach((issue) => {
+      if (
+        issue.type === 'Task' &&
+        issue.parentType &&
+        issue.parentSummary?.startsWith('Redesign')
+      ) {
+        console.info(`Task issue: ${issue.code} ${issue.summary}`)
+        console.info(`${issue.parentType} issue: ${issue?.parentKey}\n`)
+      }
+    })
   })
   // .then((invoiceData) => {
   //   const wb: XLSX.WorkBook = XLSX.utils.book_new()
